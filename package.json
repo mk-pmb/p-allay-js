@@ -1,5 +1,5 @@
 { "name": "p-allay",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Allay expected promise rejections: Resolve with your failure value instead.",
   "keywords": [
     "allay",
