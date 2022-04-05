@@ -1,7 +1,6 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 
 import getOwn from 'getown';
-import isFunc from 'is-fn';
 
 
 function ensureError(e) {
@@ -9,22 +8,22 @@ function ensureError(e) {
   const t = (e && typeof e);
   if (t === 'object') { return e; }
   if (t === 'string') { return new Error(e); }
-  return new TypeError('Original error was neither object nor string: ' + e); }
+  return new TypeError('Original error was neither object nor string: ' + e);
 }
 
 
-function maybePr(pr, f) {
-  if (pr && isFunc(pr.then)) { pr.then(null, f); }
-  return f;
-}
+function maybePr(pr, f) { return (pr ? pr.then(null, f) : f); }
 
 
 const EX = {
 
-  ifHasProp(key, pr) {
-    return maybePr(pr, function allayIfHasProp(err) {
-      const val = getOwn(err, key);
-      if (val !== undefined) { return val; }
+  ifPropDef(key, pr) {
+    return maybePr(pr, function allayIfPropDef(err) {
+      if (err) {
+        const val = err[key];
+        // console.debug('allayIfHasProp:', [key, val, err]);
+        if (val !== undefined) { return val; }
+      }
       throw ensureError(err);
     });
   },
@@ -32,8 +31,11 @@ const EX = {
 
   byCode(dict, pr) {
     return maybePr(pr, function allayByCode(err) {
-      const val = getOwn(dict, (err || false).code);
-      if (val !== undefined) { return val; }
+      if (err) {
+        const val = getOwn(dict, err.code);
+        // console.debug('allayByCode:', [dict, val, err]);
+        if (val !== undefined) { return val; }
+      }
       throw ensureError(err);
     });
   },

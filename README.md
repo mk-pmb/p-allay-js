@@ -16,19 +16,19 @@ API
 This module exports an object that holds these methods:
 
 
-### .ifHasProp(key[, pr])
+### .ifPropDef(key[, pr])
 
-Returns a function `allayIfHasProp(err)` that will:
+Without `pr` missing or false-y,
+returns a function `allayIfPropDef(err)` that will:
 
-* Try to look up a `key`-named own property of `err`.
-  If found, and its value is not `undefined`, return that value.
+* Lookup `err[key]`, and if it's not `undefined`, return it.
 * Otherwise, throw something:
   * If `err` is an object, throw that.
   * If `err` is a non-empty string, throw a `new Error(err)`.
   * If neither, throw a `TypeError` that complains about `err`.
 
-If `pr` is something that holds a `.then` method,
-it will be called with arguments `(null, allayIfHasProp)`.
+If `pr` is true-y, instead return the result of calling
+`pr.then(null, allayIfPropDef)`.
 
 
 
@@ -38,9 +38,9 @@ Returns a function `allayByCode(err)` that will:
 
 * Try to look up an `err.code`-named own property in dictionary object `dict`.
   If found, and its value is not `undefined`, return that value.
-* Otherwise, throw as described for `.ifHasProp`.
+* Otherwise, throw as described for `.ifPropDef`.
 
-`pr` works like with `.ifHasProp`.
+`pr` works like with `.ifPropDef`.
 
 
 
