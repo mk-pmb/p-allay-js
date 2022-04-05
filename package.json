@@ -21,6 +21,7 @@
 
   "private": false, "license": "ISC",
 
+  "main": "allay.mjs",
   "scripts": { "test": "elp && nodemjs test/all.mjs" },
   "directories": { "test": "test" },
   "eslintConfig": { "extends": "nodejs-pmb" },
